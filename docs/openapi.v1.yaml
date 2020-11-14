@@ -1,0 +1,405 @@
+openapi: 3.0.0
+info:
+  title: todo
+  version: '1.0'
+  description: Todo app api
+  contact:
+    name: sk39
+servers:
+  - url: 'http://localhost:8080/v1/api'
+tags:
+  - name: todos
+  - name: auth
+paths:
+  /todos:
+    post:
+      summary: Create new todo
+      tags:
+        - todos
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+              examples: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      x-openapi-router-controller: todo_app.api.todos
+      operationId: create_todo
+      description: 新しいTodoを作成する
+      security:
+        - jwt: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTodoParam'
+            examples:
+              example-1:
+                value:
+                  title: Hoge task
+    get:
+      summary: Get all todo
+      tags:
+        - todos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTodo'
+              examples: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      x-openapi-router-controller: todo_app.api.todos
+      operationId: list_todo
+      security:
+        - jwt: []
+      parameters: []
+      description: ログインユーザのTodo一覧を取得する
+  '/todos/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get a todo
+      tags:
+        - todos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      x-openapi-router-controller: todo_app.api.todos
+      operationId: get_todo
+      description: Todoを取得する
+      security:
+        - jwt: []
+    patch:
+      summary: Update a todo
+      tags:
+        - todos
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      x-openapi-router-controller: todo_app.api.todos
+      operationId: update_todo
+      description: Todoを更新する
+      security:
+        - jwt: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTodoParam'
+            examples:
+              example-1:
+                value:
+                  title: Hoge task2
+                  completed: true
+    delete:
+      summary: Remove a todo
+      tags:
+        - todos
+      x-openapi-router-controller: todo_app.api.todos
+      operationId: remove_todo
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      description: Todoを削除する
+      security:
+        - jwt: []
+  /auth:
+    post:
+      summary: ''
+      tags:
+        - auth
+      x-openapi-router-controller: todo_app.api.auth
+      operationId: sign_in
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+              examples: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      description: ログインする
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthParam'
+            examples:
+              example-1:
+                value:
+                  user_id: any_user
+                  password: any_password
+  /auth/refresh:
+    post:
+      summary: ''
+      tags:
+        - auth
+      x-openapi-router-controller: todo_app.api.auth
+      operationId: refresh_token
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      description: ログインユーザのセッションを更新する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+              required:
+                - refresh_token
+            examples:
+              example-1:
+                value:
+                  refresh_token: <refresh_token...>
+  /auth/sign_in_user:
+    get:
+      summary: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      x-openapi-router-controller: todo_app.api.auth
+      operationId: get_sign_in_user
+      description: ログインユーザの情報を取得する
+      security:
+        - jwt: []
+    parameters: []
+components:
+  schemas:
+    Todo:
+      title: Todo
+      type: object
+      x-examples:
+        example-1:
+          id: '1'
+          title: Hoge task
+          completed: true
+          user_id: any_user
+          created_at: '2020-11-15 08:31:07'
+          updated_at: '2020-11-15 08:31:07'
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        completed:
+          type: boolean
+        user_id:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+        - id
+        - title
+        - completed
+        - user_id
+        - created_at
+        - updated_at
+    ListTodo:
+      title: ListTodo
+      type: object
+      x-examples: {}
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Todo'
+      required:
+        - list
+    Errors:
+      title: Errors
+      type: object
+      x-examples:
+        example-1:
+          errors:
+            - message: Hoge message
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+      required:
+        - errors
+    CreateTodoParam:
+      title: CreateTodo
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 60
+      required:
+        - title
+      x-examples:
+        example-1:
+          title: Hoge task
+    UpdateTodoParam:
+      title: UpdateTodoParam
+      type: object
+      x-examples:
+        example-1:
+          title: Hoge task2
+          completed: true
+      properties:
+        title:
+          type: string
+          maxLength: 60
+        completed:
+          type: boolean
+    AuthParam:
+      type: object
+      properties:
+        user_id:
+          type: string
+        password:
+          type: string
+      required:
+        - user_id
+        - password
+      x-examples:
+        example-1:
+          user_id: any_user
+          password: any_password
+    AuthToken:
+      title: AuthToken
+      type: object
+      properties:
+        refresh_token:
+          type: string
+        access_token:
+          type: string
+      required:
+        - refresh_token
+        - access_token
+      x-examples: {}
+    User:
+      title: User
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+        - id
+      x-examples:
+        example-1:
+          id: any_user
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: todo_app.api.auth.decode_token

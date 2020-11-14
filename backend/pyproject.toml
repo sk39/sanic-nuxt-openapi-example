@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["sk39"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+connexion = {extras = ["swagger-ui"], git = "https://github.com/sk39/connexion.git", branch = "sanic-poc-patch"}
+gino = {extras = ["sanic"], version = "^1.0.1"}
+psycopg2-binary = "^2.8.6"
+asyncpg = "^0.21.0"
+python-jose = "^3.2.0"
+Sanic-Cors = "^0.10.0"
+uvicorn = "^0.12.2"
+python-dotenv = "^0.15.0"
+
+[tool.poetry.dev-dependencies]
+alembic = "^1.4.3"
+autopep8 = "^1.5.4"
+flake8 = "^3.8.4"
+pytest = "^6.1.2"
+mypy = "^0.790"
+pytest-sanic = "^1.6.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

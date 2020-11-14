@@ -1,0 +1,9 @@
+{
+  "error": {
+    "unexpected": "予期せぬエラーが発生しました",
+    "network": "通信エラーが発生しました",
+    "failed_auth_refresh": "ログイン状態が無効になりました",
+    "required": "入力が必要です",
+    "maxlength": "最大文字列数を超過しています"
+  }
+}

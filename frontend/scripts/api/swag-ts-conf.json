@@ -1,0 +1,9 @@
+{
+  "snapshot": false,
+  "supportES6": true,
+  "withSeparateModelsAndApi": true,
+  "sortModelPropertiesByRequiredFlag": false,
+  "sortParamsByRequiredFlag": false,
+  "typescriptThreePlus": true,
+  "useSingleRequestParameter": false
+}

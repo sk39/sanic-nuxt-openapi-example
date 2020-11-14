@@ -1,0 +1,30 @@
+.sub-bar {
+  background: $color_header_back;
+  padding: 0.6rem 1.2rem;
+  border-top: 1px solid #ccc;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $color_base_text;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.v-btn {
+  text-transform: none !important;
+}
+
+.todo-operation-sheet {
+  padding: 16px 24px;
+  .t-title {
+    font-weight: 700;
+    padding-bottom: 24px;
+  }
+  .btn-group {
+    padding-top: 16px;
+  }
+}

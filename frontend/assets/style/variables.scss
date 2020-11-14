@@ -1,0 +1,23 @@
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+//
+// The variables you want to modify
+
+//$font-size-root: 20px;
+
+$color_theme: #184ed0; //#ff0047;
+$color_theme_light1: #6c8bd7;
+$color_theme_light2: #4a76f1;
+$color_theme_dark1: #1c3e92;
+$color_header_back: #fff;
+$color_card_back: #fff;
+$color_base_back: #f5f7fc;
+$color_base_text: #272832;
+$color_base_border: #c1c1c1;
+$color_error: #ff5709;
+
+$material-light: (
+  'background': $color_base_back,
+  'app-bar': $color_header_back,
+);
+
+//@import '../../node_modules/vuetify/src/styles/styles';
