@@ -56,7 +56,6 @@ def _generate_token_response(user_id: str):
 
 
 def _generate_token(user_id: str, token_type: str, current, exp):
-    print("_generate_token", current, exp)
     payload = {
         "iss": JWT_ISSUER,
         "iat": int(current.timestamp()),

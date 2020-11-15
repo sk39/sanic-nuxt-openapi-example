@@ -2,7 +2,7 @@ import s from 'underscore.string'
 import { ValidateParam, ValidateType } from './model'
 import ViewUtils from '~/utils/ViewUtils'
 
-export { ValidateParam, ValidateType }
+export { ValidateType }
 
 export default class Validator {
   static rules(params: (ValidateType | ValidateParam)[]) {
@@ -23,7 +23,7 @@ export default class Validator {
 
   static maxlength(value, { length }) {
     if (value && value.length > length) {
-      return ViewUtils.t('error.maxlength', length)
+      return ViewUtils.t('error.maxlength')
     }
     return true
   }

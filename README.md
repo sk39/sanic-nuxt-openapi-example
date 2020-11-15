@@ -10,11 +10,12 @@ OpenAPI, Sanic, NuxtのサンプルTo-doアプリ。
 * DBMSはPostgreSQL
 
 
-## 事前条件
+## Requirement
 * Docker
 * Python 3.8+
 * Poetry
 * Node.js
+
 
 ## バックエンド起動
 ```bash
@@ -42,7 +43,7 @@ uvicorn --reload main:app --port 8080
 cd frontend
 
 ## 環境構築
-npm ci
+npm install
 
 ## 起動
 npm run dev

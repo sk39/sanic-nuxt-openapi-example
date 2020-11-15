@@ -24,6 +24,9 @@ alembic revision --autogenerate -m "<message>"
 ## migrate db
 alembic upgrade head
 
+## test
+pytest
+
 ## run server
 python main.py
 

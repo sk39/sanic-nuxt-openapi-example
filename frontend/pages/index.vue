@@ -2,9 +2,10 @@
   <div class="todo-page">
     <div class="sub-bar elevation-1">
       <div>To-do リスト</div>
-      <RefreshButton @click="refresh" />
+      <RefreshButton @click="refresh({ showLoading: true })" />
     </div>
     <div class="todo-container">
+      <div v-if="!loading && todos.length === 0">タスクはありません</div>
       <div class="list-wrapper">
         <TodoList
           :list="todos"
@@ -15,13 +16,20 @@
         />
       </div>
       <div class="add-btn-wrapper">
-        <v-btn class="add-btn" color="primary" large @click="showCreate = true">
+        <v-btn
+          class="add-btn"
+          color="primary"
+          large
+          :loading="processingId === 'new-todo'"
+          @click="showCreate = true"
+        >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </div>
       <CreateTodo v-model="showCreate" @done="create" />
       <EditTodo v-model="editTarget" @done="editTitle" />
       <ErrorDialog v-model="errorMessage" />
+      <PageLoading :show="loading" />
     </div>
   </div>
 </template>
@@ -35,35 +43,47 @@ import CreateTodo from '~/components/todo/CreateTodo.vue'
 import EditTodo from '~/components/todo/EditTodo.vue'
 import RefreshButton from '~/components/common/button/RefreshButton.vue'
 import ErrorDialog from '~/components/common/notification/ErrorDialog.vue'
+import PageLoading from '~/components/common/PageLoading.vue'
 
 @Component({
   layout: 'auth',
   middleware: 'auth',
-  components: { TodoList, CreateTodo, EditTodo, RefreshButton, ErrorDialog },
+  components: {
+    TodoList,
+    CreateTodo,
+    EditTodo,
+    RefreshButton,
+    PageLoading,
+    ErrorDialog,
+  },
 })
 export default class TodoPage extends Vue {
   todos: Todo[] = []
+  loading = false
   processingId: string = null
   showCreate = false
   editTarget: Todo = null
   errorMessage: string = null
 
   created() {
-    this.refresh()
+    this.refresh({ showLoading: true })
   }
 
-  async refresh() {
+  async refresh({ showLoading }) {
     try {
+      this.loading = showLoading
       const res = await ServerApi.todos().listTodo()
       this.todos = res.list
     } catch (res) {
       this.errorMessage = await ServerApi.toErrorMsg(res)
+    } finally {
+      this.loading = false
     }
   }
 
   async handleCRUDError(res) {
     this.errorMessage = await ServerApi.toErrorMsg(res)
-    await this.refresh()
+    await this.refresh({ showLoading: false })
   }
 
   async create(title: string) {
@@ -71,7 +91,7 @@ export default class TodoPage extends Vue {
       this.showCreate = false
       this.processingId = 'new-todo'
       await ServerApi.todos().createTodo({ title })
-      await this.refresh()
+      await this.refresh({ showLoading: false })
     } catch (res) {
       await this.handleCRUDError(res)
     } finally {
@@ -114,7 +134,7 @@ export default class TodoPage extends Vue {
     try {
       this.processingId = todo.id
       await ServerApi.todos().removeTodo(todo.id)
-      await this.refresh()
+      await this.refresh({ showLoading: false })
     } catch (res) {
       await this.handleCRUDError(res)
     } finally {
@@ -130,13 +150,11 @@ export default class TodoPage extends Vue {
   flex-direction: column;
   flex-wrap: nowrap;
   height: 100%;
-  overflow-y: auto;
   padding: 16px;
 }
 
 .list-wrapper {
-  overflow-y: auto;
-  padding-bottom: 56px;
+  padding: 0 16px 56px;
 }
 
 .add-btn-wrapper {

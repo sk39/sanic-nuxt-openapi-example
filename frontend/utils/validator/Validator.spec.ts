@@ -24,7 +24,7 @@ describe('Validator', () => {
     const errMsg = ViewUtils.t('error.required')
     expect(Validator.required('')).toBe(errMsg)
     expect(Validator.required(null)).toBe(errMsg)
-    expect(Validator.required('aaaa')).toBeTruthy()
+    expect(Validator.required('ああああ')).toBeTruthy()
   })
 
   test('maxlength', () => {

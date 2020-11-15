@@ -1,8 +1,5 @@
 <template>
   <div class="TodoList">
-    <div v-if="list.length === 0" class="no-data-message">
-      タスクはありません
-    </div>
     <div
       v-for="item in list"
       :key="item.id"
@@ -88,6 +85,7 @@ export default class TodoList extends Vue {
   padding: 0 24px;
   margin-bottom: 8px;
   background: $color_card_back;
+
   &.completed {
     .todo-title {
       text-decoration: line-through;

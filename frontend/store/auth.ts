@@ -113,7 +113,8 @@ export function initialize(autoStore: AuthStore) {
     try {
       const { refreshToken } = autoStore
       if (!refreshToken) {
-        throw new Error('Refresh token does not exist')
+        await window.$nuxt.$router.push('auth/sign_in')
+        return null
       }
 
       const res = await apiNoRetry.refreshToken({ refreshToken })
