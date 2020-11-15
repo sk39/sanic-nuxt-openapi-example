@@ -2,6 +2,8 @@
 
 ## Requirement
 * Node.js
+* Java 8+
+  - for openapi-generator
 
 ## Build Setup
 

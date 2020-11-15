@@ -1,12 +1,11 @@
 # sanic-nuxt-openapi-example
-OpenAPI, Sanic, NuxtのサンプルTo-doアプリ。
+To-do app develop in OpenAPI, Sanic and Nuxt.
 
-* OpenAPIスキーマファースト
-  - 最初にOpenAPI Specification(OAS)を作成。
-* バックエンドはPython。WebフレームワークはSanic。
-  - connexionにて、OASからルーティングなどの実装を自動生成。
-* フロントエンドはNuxt(Vue.js)
-  - openapi-generatorを利用して、OASからサーバとの通信部分は自動生成。
+* OpenAPI First
+* バックエンドはPython。WebフレームワークはSanic & connexion。
+  - connexionにてOpenAPI Specification(OAS)からルーティングなどを自動処理
+* フロントエンドはNuxt(Vue.js), Typescript
+  - openapi-generatorにてOASから通信部分は自動生成
 * DBMSはPostgreSQL
 
 
@@ -15,38 +14,41 @@ OpenAPI, Sanic, NuxtのサンプルTo-doアプリ。
 * Python 3.8+
 * Poetry
 * Node.js
+* Java 8+
+  - openapi-generator(フロントの通信コード生成)を使う場合のみ
 
 
-## バックエンド起動
+## Quick Start
+### Backend
 ```bash
 cd backend
 
-## DB起動
+## start db
 docker-compose up -d
 
-## 環境構築
+## setup
 python3 -m venv venv
 source venv/bin/activate
 poetry install
 
-## DBマイグレート
+## migrate db
 alembic upgrade head
 
-## 起動
+## run via ASGI
 uvicorn --reload main:app --port 8080
 ```
 
-上記以外のコマンドについては[backend/README.md](backend/README.md)を参照
+See [backend/README.md](backend/README.md) for details.
 
-## フロントエンド起動
+### Frontend
 ```bash
 cd frontend
 
-## 環境構築
+## install dependencies
 npm install
 
-## 起動
+## serve with hot reload at localhost:3000
 npm run dev
 ```
 
-上記以外のコマンドについては[frontend/README.md](frontend/README.md)を参照
+See [frontend/README.md](frontend/README.md) for details.
