@@ -4,8 +4,9 @@ To-do app develop in OpenAPI, Sanic and Nuxt.
 * OpenAPI First
 * バックエンドはPython。WebフレームワークはSanic & connexion。
   - connexionにてOpenAPI Specification(OAS)からルーティングなどを自動処理
-* フロントエンドはNuxt(Vue.js), Typescript
-  - openapi-generatorにてOASから通信部分は自動生成
+* フロントエンドはNuxt(Vue.js)
+  - Typescript
+  - openapi-generatorにてOASから通信部分は自動生成(Typesafe)
 * DBMSはPostgreSQL
 
 
